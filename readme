@@ -1,0 +1,32 @@
+TP NOTE :
+
+Créez une API de gestion d'article pour un blog. Cette API doit contenir:
+
+une route pour récupérer un article
+
+une route pour récupérer la liste des articles
+
+une route pour ajouter un article
+
+une route pour supprimer un article
+
+une route pour modifier un article
+
+une route pour créer un compte
+
+une route pour se connecter (récupérer un JWT)
+
+Les routes liées à la creation/suppression/modification d'articles doivent être uniquement accessibles aux personnes connectés. La seule personne pouvant modifier ou supprimer un article doit être la personne qui l'a créé.
+
+Les utilisateurs ainsi que les articles seront stockés dans restdb comme vu en TP.
+
+Le système d'authentification doit être fait avec les librairies utilisées en TP (passport et passport-jwt).
+
+Le projet doit être déployé sur Heroku.
+
+ATTENTION: l'api doit communiquer uniquement en JSON (res.json avec express). ATTENTION 2: pour communiquer avec votre serveur express depuis une page web, vous aurez besoin de gérer les CORS. voir le middleware express cors
+
+Le rendu du projet sera
+
+l'URL d'un github contenant les sources de votre projet ainsi qu'un readme qui explique comment lancer/installer le projet.
+l'URL de votre API + l'url de l'application finale (avec la partie Vue.js)
