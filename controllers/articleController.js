@@ -1,6 +1,9 @@
-const catchAsync = require('../utils/catchAsync');
 const axios = require('axios').default;
+const bodyParser = require('body-parser');
+const urlEncodedParser = bodyParser.urlencoded({ extended: false });
+const catchAsync = require('../utils/catchAsync');
 
+const DATABASE = process.env.DATABASE_URL;
 
 exports.getAllArticle = catchAsync(async (req, res) => {
     const config = {
@@ -9,27 +12,37 @@ exports.getAllArticle = catchAsync(async (req, res) => {
             'Content-Type': 'application/json'
         }
     }
-    const response_articles = await axios.get('https://jsherokunodedb-060f.restdb.io/rest/article', config);  
-    res.send(response_articles.data);
+    const response_articles = await axios.get(`${DATABASE}/article`, config);
+    res.json(response_articles.data);
 });
 
 exports.getOneArticle = catchAsync(async (req, res) => {
+    const id = req.params.id;
     const config = {
         headers: {
             'x-apikey': '7a42a1bbb286d8bc8479ba2913acf83f1b4d8',
             'Content-Type': 'application/json'
         } 
     }
-    const response_articles = await axios.get(`https://jsherokunodedb-060f.restdb.io/rest/article/${id}`, config);  
+    const response_articles = await axios.get(`${DATABASE}/article/${id}`, config);  
+
+    if( !response_articles ) {
+        res.send('L\'article demandé n\'existe pas!');
+    }
+
     res.send(response_articles.data);
 });
 
 exports.createArticle = catchAsync(async (req, res) => {
-    console.log('test 1');
+
     const config = {
-        headers: { 'x-apikey': '7a42a1bbb286d8bc8479ba2913acf83f1b4d8' }
+        headers: {
+            'x-apikey': '7a42a1bbb286d8bc8479ba2913acf83f1b4d8',
+            'Content-Type': 'application/json'
+        }
     }
-    console.log('test 2');
+    
+    const url = `${DATABASE}/article`;
 
     const data = {
         title: 'un quatrième article',
@@ -38,13 +51,8 @@ exports.createArticle = catchAsync(async (req, res) => {
         publish_date: Date.now(),
         cover: 'une image',
     }
-    console.log('test 3');
-
-    const url = 'https://jsherokunodedb-060f.restdb.io/rest/article'
-    console.log('test 4');
 
     const response = await axios.post(url, data, config);
-    console.log('test 4');
 
     console.log(response);
     res.send('article créé');
