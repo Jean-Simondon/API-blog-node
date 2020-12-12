@@ -1,4 +1,5 @@
 const catchAsync = require('../utils/catchAsync');
+const axios = require('axios').default;
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
 res.status(200).json({
