@@ -1,81 +1,129 @@
 const axios = require('axios').default;
-const bodyParser = require('body-parser');
-const urlEncodedParser = bodyParser.urlencoded({ extended: false });
 const catchAsync = require('../utils/catchAsync');
 
-const DATABASE = process.env.DATABASE_URL;
+const DATABASE = process.env.DATABASE_URL || 'https://jsherokunodedb-060f.restdb.io/rest';
+
+const axiosConfig = {
+    headers: {
+        'x-apikey': '7a42a1bbb286d8bc8479ba2913acf83f1b4d8',
+        'Content-Type': 'application/json'
+    }
+}
 
 exports.getAllArticle = catchAsync(async (req, res) => {
-    const config = {
-        headers: {
-            'x-apikey': '7a42a1bbb286d8bc8479ba2913acf83f1b4d8',
-            'Content-Type': 'application/json'
-        }
-    }
-    const response_articles = await axios.get(`${DATABASE}/article`, config);
-    res.json(response_articles.data);
+
+    const response_articles = await axios.get(`${DATABASE}/article`, axiosConfig);
+
+    res.json({
+        status: 'success',
+        data: {
+            article: response_articles.data,
+        },
+    });
+
 });
 
-exports.getOneArticle = catchAsync(async (req, res) => {
-    const id = req.params.id;
-    const config = {
-        headers: {
-            'x-apikey': '7a42a1bbb286d8bc8479ba2913acf83f1b4d8',
-            'Content-Type': 'application/json'
-        } 
-    }
-    const response_articles = await axios.get(`${DATABASE}/article/${id}`, config);  
 
-    if( !response_articles ) {
+exports.getOneArticle = catchAsync(async (req, res) => {
+
+    const id = req.params.id;
+
+    const response_article = await axios.get(`${DATABASE}/article/${id}`, axiosConfig);
+
+    if( !response_article ) {
         res.send('L\'article demandé n\'existe pas!');
     }
 
-    res.send(response_articles.data);
+    res.json({
+        status: 'success',
+        data: {
+            article: response_article.data,
+        },
+    });
+
 });
+
 
 exports.createArticle = catchAsync(async (req, res) => {
 
-    const config = {
-        headers: {
-            'x-apikey': '7a42a1bbb286d8bc8479ba2913acf83f1b4d8',
-            'Content-Type': 'application/json'
-        }
+    if( !req.body.title ) {
+        res.send('L\'article doit avoir un titre');
     }
-    
+    if( !req.body.content ) {
+        res.send('Le contenu de l\'article ne peut pas être vide');
+    }
+
     const url = `${DATABASE}/article`;
 
     const data = {
-        title: 'un quatrième article',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sagittis ornare condimentum. Etiam auctor lectus non lacus iaculis, vitae pulvinar enim rutrum. Ut porta, sapien ac finibus molestie, est nisi fermentum ipsum, eget bibendum nisl metus ac arcu. Fusce ut risus in erat semper maximus nec eget elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse non purus malesuada, commodo nulla nec, semper arcu. Nunc maximus dui mauris, sed porta tortor posuere et. Maecenas varius lacinia porttitor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec at enim efficitur, efficitur sem in, convallis turpis. Nulla eu massa at arcu faucibus posuere. Integer et eleifend odio, id dapibus sem.  Aliquam ullamcorper, velit nec congue rhoncus, ante nibh lacinia erat, sed facilisis massa magna volutpat dolor. Etiam et rhoncus tortor, vitae fermentum justo. Maecenas eu consectetur enim. Vivamus eget ante aliquet, blandit magna a, ornare est. Nunc luctus egestas risus, nec elementum arcu rhoncus eget. Aliquam eu eros eleifend, bibendum nunc sed, faucibus lorem. Donec diam tellus, dignissim eget odio et, lacinia malesuada nulla. Aliquam semper iaculis dui, non tempor velit facilisis bibendum. Nam eu magna suscipit, pretium sem at, sodales neque. Praesent sollicitudin neque vitae orci maximus feugiat. Curabitur suscipit mattis dolor at pulvinar. Aenean eget ipsum scelerisque, placerat diam sit amet, mattis odio. Curabitur vel tempor purus. Donec porttitor at eros eget faucibus. Donec rhoncus sem enim, id blandit lorem malesuada vel. Sed vel posuere est.  Vivamus vitae auctor orci. Curabitur lobortis neque non arcu egestas molestie. Nulla tincidunt risus nulla, at viverra diam aliquet et. Proin a dui porttitor, ornare enim ut, tincidunt ligula. Vivamus a erat ac risus tincidunt dignissim eget eu mauris. Aliquam ultrices erat et sapien euismod, quis molestie odio maximus. Vivamus feugiat augue lectus, nec mattis velit porta consequat. Etiam dignissim aliquet eros, at cursus nulla tempus quis. In dignissim tempor sodales.  Duis a tincidunt ante. Pellentesque maximus lectus sapien, ac fermentum est congue quis. Phasellus vel pretium eros, in dapibus turpis. Praesent ut posuere eros. Morbi a tortor sed enim rhoncus laoreet. Aliquam sollicitudin quam non dui tempor placerat. In hac habitasse platea dictumst. Morbi malesuada lectus id sem finibus, id dictum dui dictum.  Nulla suscipit orci id nibh tempor iaculis. Nam eu arcu risus. Nam hendrerit, mauris posuere iaculis vestibulum, turpis elit mollis sem, vitae congue neque eros id orci. Duis vulputate semper augue quis consectetur. Nunc urna lorem, commodo eu ultrices vel, tristique quis ipsum. Quisque ultrices vestibulum lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi quis efficitur nisi, ut auctor sapien. Ut vel neque ut diam posuere tristique.',
-        author: 'Jean Simondon',
-        publish_date: Date.now(),
-        cover: 'une image',
+        title: req.body.title,
+        content: req.body.content,
+        author: req.user.data,
+        publish_date: new Date()
+        // cover: upload d'images;
     }
 
-    const response = await axios.post(url, data, config);
+    const response = await axios.post(url, data, axiosConfig);
 
-    console.log(response);
-    res.send('article créé');
+    res.json({
+        status: 'success',
+        message: 'article créé',
+    });
+
 });
 
-
-// 
-// params: {
-//     q: {
-//         title: "une quatrième "
-//     }
-// }
-
-
-
 exports.updateArticle = catchAsync(async (req, res) => {
-res.status(200).json({
-    status: 'road under construction',
+
+    const user = req.user.data;
+    const id = req.params.id;
+
+    const response_article = await axios.get(`${DATABASE}/article/${id}`, axiosConfig);
+
+    if( user[0]['_id'] !== response_article.data.author[0]['_id'] ) {
+        res.send('Vous n\'êtes pas l\'auteur de cet article!');
+    }
+
+    const data = {};
+
+    if( req.body.title ) {
+        data.title = req.body.title;
+    } else {
+        data.title = response_article.title;
+    }
+
+    if( req.body.content ) {
+        data.content = req.body.content;
+    } else {
+        data.content = response_article.content;
+    }
+
+    data.author = user;
+    data.publish_date = response_article.data.publish_date;
+
+    const response = await axios.patch(`${DATABASE}/article/${id}`, data, axiosConfig);
+
+    res.json({
+        status: 'success',
+        message: 'article mis à jour',
     });
+
 });
 
 exports.deleteArticle = catchAsync(async (req, res) => {
-res.status(200).json({
-    status: 'road under construction',
+
+    const user = req.user.data;
+    const id = req.params.id;
+
+    const response_article = await axios.get(`${DATABASE}/article/${id}`, axiosConfig);
+
+    if( user[0]['_id'] !== response_article.data.author[0]['_id'] ) {
+        res.send('Vous n\'êtes pas l\'auteur de cet article!');
+    }
+
+    const response = await axios.delete(`${DATABASE}/article/${id}`, axiosConfig);
+
+    res.json({
+        status: 'success',
+        message: 'article supprimé',
     });
 });

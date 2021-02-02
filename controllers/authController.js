@@ -1,43 +1,51 @@
 // MODULE
 const passport = require('passport')
-const passportJWT = require('passport-jwt')
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 const jwt = require('jsonwebtoken')
+const axios = require('axios').default;
+
 const catchAsync = require('../utils/catchAsync');
-const bodyParser = require('body-parser')
-const urlEncodedParser = bodyParser.urlencoded({ extended: false })
 
-// Récupérer les utilisateur dans la BDD plutôt que cette ligne de code
-const users = [
-            { email: 'jsimondon@yahoo.fr', password: '12345' }
-            ];
+const DATABASE = process.env.DATABASE_URL || 'https://jsherokunodedb-060f.restdb.io/rest';
 
-// VARIABLE
-const ExtractJwt = passportJWT.ExtractJwt
-const JwtStrategy = passportJWT.Strategy
-const secret = 'super_secret';
-
-// CONFUGRATION
-const jwtOptions = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: secret
+const axiosConfig = {
+    headers: {
+        'x-apikey': '7a42a1bbb286d8bc8479ba2913acf83f1b4d8',
+        'Content-Type': 'application/json'
+    }
 }
 
-const jwtStrategy = new JwtStrategy(jwtOptions, function(payload, next) {
-// usually this would be a database call:
-    const user = users.find(user => user.email === payload.user);
-    if (user) {
-        next(null, user)
-    } else {
-        next(null, false)
-    }
-});
+// ---------------- PASSPORT CONFIGURATION --------------------------------------------
 
-passport.use(jwtStrategy);
+const jwtOptions = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey:  'super_secret',
+}
 
+passport.use( new JwtStrategy(jwtOptions, catchAsync( async function(payload, done) {
+
+        const user = await axios.get(`${DATABASE}/myuser?q={"email": "${payload.jwtData.userEmail}"}`, axiosConfig);
+
+        if (user) {
+            return done(null, user) // error, user, info
+        } else {
+            return done(null, false) // error, user, info
+        }
+    })
+));
+
+// ---------------- PASSPORT CALL --------------------------------------------
 
 /**
- * Récupération d'un JWT 
- * Ajouter le urlEncodedParser pour email et password
+ * Fonction de protection
+ */
+exports.protect = passport.authenticate('jwt', { session: false })
+
+// ---------------- LOGIN ROUTE --------------------------------------------
+
+/**
+ * Récupération d'un JWT
  */
 exports.login = catchAsync(async (req, res, next) => {
 
@@ -49,51 +57,20 @@ exports.login = catchAsync(async (req, res, next) => {
         return
     }
 
-    // usually this would be a database call :
-    const user = users.find(user => user.email === email);
+    const response_user = await axios.get(`${DATABASE}/myuser?q={"password": "${password}", "email": "${email}"}`, axiosConfig);
 
-    if (!user || user.password !== password) {
+    if( !response_user ) {
         res.status(401).json({ error: 'Email / password do not match.' })
-        return
+        return;
     }
 
-    const userJwt = jwt.sign({ user: user.email }, secret);
+    const jwtData = {
+        userEmail: response_user['data'][0]['email'],
+        userId: response_user['data'][0]['_id'],
+    }
+
+    const userJwt = jwt.sign( { jwtData: jwtData }, 'super_secret' );
 
     res.json({ jwt: userJwt });
 
 });
-
-
-
-
-
-exports.signup = catchAsync(async (req, res, next) => {
-    // vérifier les données que l'on envoie
-    // si elles sont toutes là, on les utilise pour créer un nouvel utilisateur et le placer dans la BDD
-    // et on envoie un jwt à l'utilisateur par la même occasion
-    res.status(200).json({
-        status: 'road under construction',
-    });
-});
-
-
-
-exports.isAuthor = catchAsync(async (req, res, next) => {
-    res.status(200).json({
-        status: 'road under construction',
-    });
-    next();
-});
-
-
-
-
-exports.protect = catchAsync(async (req, res, next) => {
-    passport.authenticate('jwt', { session: false })
-    next();
-});
-
-
-
-
-
