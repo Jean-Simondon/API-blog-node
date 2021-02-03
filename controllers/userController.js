@@ -14,6 +14,10 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
 
     const response_users = await axios.get(`${DATABASE}/myuser`, axiosConfig);
 
+    response_users.data.forEach(element => {
+        delete element.password;
+    });
+
     res.json({
         status: 'success',
         data: {
@@ -32,6 +36,10 @@ exports.getOneUser = catchAsync(async (req, res, next) => {
     if( !response_user ) {
         res.send('L\'utilisateur demandé n\'existe pas!');
     }
+
+    delete response_user.data.password;
+
+    console.log(response_user.data);
 
     res.json({
         status: 'success',
@@ -56,15 +64,13 @@ exports.createUser = catchAsync(async (req, res, next) => {
         res.send('L\'utilisateur doit avoir un mot de passe');
     }
 
-    const url = `${DATABASE}/myuser`;
-
     const data = {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password
     }
 
-    const response = await axios.post(url, data, axiosConfig);
+    const response = await axios.post(`${DATABASE}/myuser`, data, axiosConfig);
 
     res.json({
         status: 'success',
@@ -73,18 +79,30 @@ exports.createUser = catchAsync(async (req, res, next) => {
 
 });
 
+
 exports.updateUser = catchAsync(async (req, res, next) => {
 
     const id = req.params.id;
 
-    const url = `${DATABASE}/myuser/${id}`;
+    let data = {};
 
-    const data =  {
-        username: req.body.username,
-        email: req.body.email
+    if( req.body.username ) {
+        data.username = req.body.username;
+    } else {
+        data.username = req.user.data.username;
     }
 
-    const response = await axios.patch(url, data, axiosConfig);
+    if( req.body.email ) {
+        data.email = req.body.email;
+    } else {
+        data.email = req.user.data.email;
+    }
+
+    const response = await axios.patch(`${DATABASE}/myuser/${id}`, data, axiosConfig);
+
+    if( !response ) {
+        res.send('Erreur dans l\'exécution de la requête');
+    }
 
     res.json({
         status: 'success',

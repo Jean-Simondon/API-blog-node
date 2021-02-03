@@ -1,15 +1,8 @@
-TODO :
+TODO restant :
 	cors (pour des requêtes d’api à api)
-	isAuthor ?
-	Ne pas renvoyer le mot de passe
-	Crypter le mot de passe (bcrypt, 
+	Crypter le mot de passe (bcrypt, ou md5)
 	Gérer l’unicité de l’adresse email
-	Vérifier existence user avant modification ou autre
-
-
-
-
-
+	Vérifier existence user avant modification de cet utilisateur
 
 TP NOTE :
 Créez une API de gestion d'article pour un blog. Cette API doit contenir:
@@ -23,7 +16,7 @@ une route pour modifier un article <--- OK
 
 PROTECTION DES ROUTES :
 Les routes liées à la creation/suppression/modification d'articles doivent être uniquement accessibles aux personnes connectés. <--- OK
-La seule personne pouvant modifier ou supprimer un article doit être la personne qui l'a créé.
+La seule personne pouvant modifier ou supprimer un article doit être la personne qui l'a créé. <--- OK
 
 USER :
 une route pour récupérer un utilisateur <--- OK
@@ -33,14 +26,14 @@ une route pour supprimer un compte utilisateur <--- OK
 une route pour modifier un compte utilisateur <--- OK
 
 AUTHENTIFICATION :
-Le système d'authentification doit être fait avec les librairies utilisées en TP (passport et passport-jwt).
-une route pour se connecter (récupérer un JWT)
+Le système d'authentification doit être fait avec les librairies utilisées en TP (passport et passport-jwt). <--- OK
+une route pour se connecter (récupérer un JWT) <--- OK
 
 DATABASE :
-Les utilisateurs ainsi que les articles seront stockés dans restdb comme vu en TP.
+Les utilisateurs ainsi que les articles seront stockés dans restdb comme vu en TP. <--- OK
 
 HEBERGEMENT :
-Le projet doit être déployé sur Heroku.
+Le projet doit être déployé sur Heroku. <--- OK
 
 AUTRE SPECIFICATION :
 Utiliser le middleware CORS pour permettre l'usage d'API d'un autre domaine
@@ -50,8 +43,3 @@ FORMAT DU RENDU :
 l'URL d'un github contenant les sources de votre projet ainsi qu'un readme qui explique comment lancer/installer le projet.
 l'URL de votre API + l'url de l'application finale (avec la partie Vue.js)
 
-
-
-
-
-Bcryot ou md5
