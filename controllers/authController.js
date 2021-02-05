@@ -4,6 +4,8 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const jwt = require('jsonwebtoken')
 const axios = require('axios').default;
+const bcrypt = require('bcrypt');
+
 
 const catchAsync = require('../utils/catchAsync');
 
@@ -25,12 +27,12 @@ const jwtOptions = {
 
 passport.use( new JwtStrategy(jwtOptions, catchAsync( async function(payload, done) {
 
-        const user = await axios.get(`${DATABASE}/myuser?q={"email": "${payload.jwtData.userEmail}"}`, axiosConfig);
+        const user = await axios.get(`${DATABASE}/myuser?q={"email": "${payload.userEmail}"}`, axiosConfig);
 
         if (user) {
-            return done(null, user) // error, user, info
+            return done(null, user)
         } else {
-            return done(null, false) // error, user, info
+            return done(null, false)
         }
     })
 ));
@@ -53,24 +55,28 @@ exports.login = catchAsync(async (req, res, next) => {
     const password = req.body.password;
 
     if (!email || !password) {
-        res.status(401).json({ error: 'Email or password was not provided.' })
-        return
+        res.status(401).json({ error: 'Email or password was not provided.' });
+        return;
     }
 
-    const response_user = await axios.get(`${DATABASE}/myuser?q={"password": "${password}", "email": "${email}"}`, axiosConfig);
+    const response_user = await axios.get(`${DATABASE}/myuser?q={"email": "${email}"}`, axiosConfig);
 
     if( !response_user ) {
         res.status(401).json({ error: 'Email / password do not match.' })
         return;
     }
 
-    const jwtData = {
-        userEmail: response_user['data'][0]['email'],
-        userId: response_user['data'][0]['_id'],
+    const originalPassword = response_user.data[0].password;
+
+    const match = bcrypt.compareSync(password, originalPassword);
+
+    if( match ) {
+        const userJwt = jwt.sign( { userEmail: response_user.data[0].email }, 'super_secret' );
+        res.json({ jwt: userJwt });
+        return;
+    } else {
+        res.status(401).json({ error: 'Email / password do not match.' })
+        return;
     }
-
-    const userJwt = jwt.sign( { jwtData: jwtData }, 'super_secret' );
-
-    res.json({ jwt: userJwt });
 
 });

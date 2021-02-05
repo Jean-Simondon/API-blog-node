@@ -1,5 +1,6 @@
 const catchAsync = require('../utils/catchAsync');
 const axios = require('axios').default;
+const bcrypt = require('bcrypt');
 
 const DATABASE = process.env.DATABASE_URL || 'https://jsherokunodedb-060f.restdb.io/rest';
 
@@ -39,8 +40,6 @@ exports.getOneUser = catchAsync(async (req, res, next) => {
 
     delete response_user.data.password;
 
-    console.log(response_user.data);
-
     res.json({
         status: 'success',
         data: {
@@ -59,18 +58,21 @@ exports.createUser = catchAsync(async (req, res, next) => {
     if( !req.body.email ) {
         res.send('L\'utilisateur doit avoir un email');
     }
-
     if( !req.body.password ) {
         res.send('L\'utilisateur doit avoir un mot de passe');
     }
 
-    const data = {
+    let data = {
         username: req.body.username,
         email: req.body.email,
-        password: req.body.password
     }
 
-    const response = await axios.post(`${DATABASE}/myuser`, data, axiosConfig);
+    const salt = bcrypt.genSaltSync(process.env.SALT_ROUND);
+    const hash = bcrypt.hashSync(req.body.password, salt) ;
+
+    data.password = hash;
+
+   const response = await axios.post(`${DATABASE}/myuser`, data, axiosConfig);
 
     res.json({
         status: 'success',

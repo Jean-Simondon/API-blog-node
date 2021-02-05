@@ -1,7 +1,7 @@
 TODO restant :
 	cors (pour des requêtes d’api à api)
-	Crypter le mot de passe (bcrypt, ou md5)
-	Gérer l’unicité de l’adresse email
+	Crypter le mot de passe (bcrypt, ou md5) <--- OK
+	Gérer l’unicité de l’adresse email <--- OK
 	Vérifier existence user avant modification de cet utilisateur
 
 TP NOTE :
@@ -36,8 +36,9 @@ HEBERGEMENT :
 Le projet doit être déployé sur Heroku. <--- OK
 
 AUTRE SPECIFICATION :
+ATTENTION 2: pour communiquer avec votre serveur express depuis une page web, vous aurez besoin de gérer les CORS. voir le middleware express cors
 Utiliser le middleware CORS pour permettre l'usage d'API d'un autre domaine
-l'api doit communiquer uniquement en JSON (res.json avec express). ATTENTION 2: pour communiquer avec votre serveur express depuis une page web, vous aurez besoin de gérer les CORS. voir le middleware express cors
+l'api doit communiquer uniquement en JSON (res.json avec express). 
 
 FORMAT DU RENDU :
 l'URL d'un github contenant les sources de votre projet ainsi qu'un readme qui explique comment lancer/installer le projet.

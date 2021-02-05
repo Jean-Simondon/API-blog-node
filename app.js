@@ -1,6 +1,7 @@
 // Important des modules
 const express = require('express');
 const bodyParser = require('body-parser')
+
 // const cors = require('cors');
 
 // Importation des routes pour articles et utilisateur
@@ -25,3 +26,5 @@ app.all('*', (req, res, next) => {
 });
 
 module.exports = app;
+
+
