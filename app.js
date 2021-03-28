@@ -1,8 +1,7 @@
 // Important des modules
 const express = require('express');
 const bodyParser = require('body-parser')
-
-// const cors = require('cors');
+const cors = require('cors');
 
 // Importation des routes pour articles et utilisateur
 const articleRouter = require('./routes/articleRoutes');
@@ -11,10 +10,14 @@ const authRouter = require('./routes/authRoutes');
 
 const app = express();
 
-//app.use(cors()); // https://expressjs.com/en/resources/middleware/cors.html
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// app.use(cors);
+
+var corsOptions = {
+  origin: 'http://localhost:8080',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use(cors(corsOptions)); // https://expressjs.com/en/resources/middleware/cors.html
 
 app.use('/api/v1/article', articleRouter);
 app.use('/api/v1/user', userRouter);

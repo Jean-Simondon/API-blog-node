@@ -50,6 +50,24 @@ exports.getOneUser = catchAsync(async (req, res, next) => {
 });
 
 
+exports.getCurrentUser = catchAsync(async (req, res, next) => {
+
+    if( req.user.data ) {
+        const user = req.user.data;
+        delete user[0].password;
+        res.json({
+            status: 'success',
+            data: {
+                user: user[0],
+            },
+        });
+    } else {
+        res.send('Une erreur s\'est produite');
+    }
+
+});
+
+
 exports.createUser = catchAsync(async (req, res, next) => {
 
     if( !req.body.username ) {

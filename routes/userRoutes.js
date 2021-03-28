@@ -5,6 +5,10 @@ const authController = require('../controllers/authController');
 const router = express.Router();
 
 router
+  .route('/currentuser')
+  .get( authController.protect, userController.getCurrentUser );
+
+router
   .route('/')
   .get( authController.protect, userController.getAllUsers )
   .post( userController.createUser );
@@ -15,4 +19,5 @@ router
   .patch( authController.protect, userController.updateUser )
   .delete( authController.protect, userController.deleteUser );
 
+  
 module.exports = router;
