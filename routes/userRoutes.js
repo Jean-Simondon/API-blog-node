@@ -19,5 +19,5 @@ router
   .patch( authController.protect, userController.updateUser )
   .delete( authController.protect, userController.deleteUser );
 
-  
+
 module.exports = router;
