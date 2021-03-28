@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 var corsOptions = {
-  origin: 'wonderful-turing-d512ba.netlify.app',
+  origin: 'https://wonderful-turing-d512ba.netlify.app/',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 app.use(cors(corsOptions)); // https://expressjs.com/en/resources/middleware/cors.html
