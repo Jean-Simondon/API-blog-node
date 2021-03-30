@@ -71,13 +71,23 @@ exports.getCurrentUser = catchAsync(async (req, res, next) => {
 exports.createUser = catchAsync(async (req, res, next) => {
 
     if( !req.body.username ) {
-        res.send('L\'utilisateur doit avoir un nom');
+        res.status(500).json({
+            status: 'error',
+            message: 'Le nom d\'utilisateur est requis',
+          }).send();
+
     }
     if( !req.body.email ) {
-        res.send('L\'utilisateur doit avoir un email');
+        res.status(500).json({
+            status: 'error',
+            message: 'L\'utilisateur doit avoir un email',
+        }).send();
     }
     if( !req.body.password ) {
-        res.send('L\'utilisateur doit avoir un mot de passe');
+        res.status(500).json({
+            status: 'error',
+            message: 'L\'utilisateur doit avoir un mot de passe',
+        }).send();
     }
 
     let data = {
