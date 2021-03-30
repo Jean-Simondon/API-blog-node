@@ -55,27 +55,44 @@ exports.login = catchAsync(async (req, res, next) => {
     const password = req.body.password;
 
     if (!email || !password) {
-        res.status(401).json({ error: 'Email or password was not provided.' });
+        res.status(401).json({
+            status: 'error',
+            message: 'Email or password was not provided.',
+          }).send();
         return;
     }
 
     const response_user = await axios.get(`${DATABASE}/myuser?q={"email": "${email}"}`, axiosConfig);
 
-    if( !response_user ) {
-        res.status(401).json({ error: 'Email / password do not match.' })
+    if( response_user.data.length == 0 ) {
+        res.status(401).json({
+            status: 'error',
+            message: 'Error login.',
+          }).send();
         return;
     }
 
-    const originalPassword = response_user.data[0].password;
-
-    const match = bcrypt.compareSync(password, originalPassword);
+    let match = undefined;
+    if( response_user.data[0].password !== undefined ) {
+        const originalPassword = response_user.data[0].password;
+        match = bcrypt.compareSync(password, originalPassword);
+    } else {
+        res.status(401).json({
+            status: 'error',
+            message: 'Error login.',
+          }).send();
+        return;
+    }
 
     if( match ) {
         const userJwt = jwt.sign( { userEmail: response_user.data[0].email }, 'super_secret' );
-        res.json({ jwt: userJwt });
+        res.status(200).json({ jwt: userJwt }).send();
         return;
     } else {
-        res.status(401).json({ error: 'Email / password do not match.' })
+        res.status(401).json({
+            status: 'error',
+            message: 'Error login.',
+          }).send();
         return;
     }
 

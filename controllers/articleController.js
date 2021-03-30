@@ -31,10 +31,10 @@ exports.getOneArticle = catchAsync(async (req, res) => {
     const response_article = await axios.get(`${DATABASE}/article/${id}`, axiosConfig);
 
     if( !response_article ) {
-        res.send('L\'article demandé n\'existe pas!');
+        res.status(401).send('L\'article demandé n\'existe pas!');
     }
 
-    res.json({
+    res.status(200).json({
         status: 'success',
         data: {
             article: response_article.data,
@@ -43,14 +43,13 @@ exports.getOneArticle = catchAsync(async (req, res) => {
 
 });
 
-
 exports.createArticle = catchAsync(async (req, res) => {
 
     if( !req.body.title ) {
-        res.send('L\'article doit avoir un titre');
+        res.status(401).send('L\'article doit avoir un titre');
     }
     if( !req.body.content ) {
-        res.send('Le contenu de l\'article ne peut pas être vide');
+        res.status(401).send('Le contenu de l\'article ne peut pas être vide');
     }
 
     const url = `${DATABASE}/article`;
@@ -60,15 +59,14 @@ exports.createArticle = catchAsync(async (req, res) => {
         content: req.body.content,
         author: req.user.data,
         publish_date: new Date()
-        // cover: upload d'images;
     }
 
     const response = await axios.post(url, data, axiosConfig);
 
-    res.json({
+    res.status(200).json({
         status: 'success',
-        message: 'article créé',
-    });
+        message: 'Article créé',
+    }).send();
 
 });
 
@@ -80,7 +78,7 @@ exports.updateArticle = catchAsync(async (req, res) => {
     const response_article = await axios.get(`${DATABASE}/article/${id}`, axiosConfig);
 
     if( user[0]['_id'] !== response_article.data.author[0]['_id'] ) {
-        res.send('Vous n\'êtes pas l\'auteur de cet article!');
+        res.status(401).send('Vous n\'êtes pas l\'auteur de cet article!');
     }
 
     const data = {};
@@ -117,7 +115,7 @@ exports.deleteArticle = catchAsync(async (req, res) => {
     const response_article = await axios.get(`${DATABASE}/article/${id}`, axiosConfig);
 
     if( user[0]['_id'] !== response_article.data.author[0]['_id'] ) {
-        res.send('Vous n\'êtes pas l\'auteur de cet article!');
+        res.status(401).send('Vous n\'êtes pas l\'auteur de cet article!');
     }
 
     const response = await axios.delete(`${DATABASE}/article/${id}`, axiosConfig);

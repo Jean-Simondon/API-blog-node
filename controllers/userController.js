@@ -19,7 +19,7 @@ exports.getAllUsers = catchAsync(async (req, res, next) => {
         delete element.password;
     });
 
-    res.json({
+    res.status(200).json({
         status: 'success',
         data: {
             users: response_users.data,
@@ -35,12 +35,12 @@ exports.getOneUser = catchAsync(async (req, res, next) => {
     const response_user = await axios.get(`${DATABASE}/myuser/${id}`, axiosConfig);
 
     if( !response_user ) {
-        res.send('L\'utilisateur demandé n\'existe pas!');
+        res.status(401).send('L\'utilisateur demandé n\'existe pas!');
     }
 
     delete response_user.data.password;
 
-    res.json({
+    res.status(200).json({
         status: 'success',
         data: {
             user: response_user.data,
@@ -55,14 +55,19 @@ exports.getCurrentUser = catchAsync(async (req, res, next) => {
     if( req.user.data ) {
         const user = req.user.data;
         delete user[0].password;
-        res.json({
+        res.status(200).json({
             status: 'success',
             data: {
                 user: user[0],
             },
         });
+        return;
     } else {
-        res.send('Une erreur s\'est produite');
+        res.status(401).json({
+            status: "error",
+            message: "Une erreur s\'est produite",
+        }).send('');
+        return;
     }
 
 });
@@ -71,21 +76,21 @@ exports.getCurrentUser = catchAsync(async (req, res, next) => {
 exports.createUser = catchAsync(async (req, res, next) => {
 
     if( !req.body.username ) {
-        res.status(500).json({
+        res.status(401).json({
             status: 'error',
             message: 'Le nom d\'utilisateur est requis',
           }).send();
           return;
     }
     if( !req.body.email ) {
-        res.status(500).json({
+        res.status(401).json({
             status: 'error',
             message: 'L\'utilisateur doit avoir un email',
         }).send();
         return;
     }
     if( !req.body.password ) {
-        res.status(500).json({
+        res.status(401).json({
             status: 'error',
             message: 'L\'utilisateur doit avoir un mot de passe',
         }).send();
@@ -102,12 +107,21 @@ exports.createUser = catchAsync(async (req, res, next) => {
 
     data.password = hash;
 
-   const response = await axios.post(`${DATABASE}/myuser`, data, axiosConfig);
+    const response = await axios.post(`${DATABASE}/myuser`, data, axiosConfig);
 
-    res.json({
-        status: 'success',
-        message: 'utilisateur créé',
-    });
+    if( !response ) {
+        res.status(401).json({
+            status: 'error',
+            message: 'Erreur dans l\'exécution de la requête',
+        }).send();
+        return;
+    } else {
+        res.status(200).json({
+            status: 'success',
+            message: 'utilisateur créé',
+        }).send();
+        return;
+    }
 
 });
 
@@ -133,13 +147,18 @@ exports.updateUser = catchAsync(async (req, res, next) => {
     const response = await axios.patch(`${DATABASE}/myuser/${id}`, data, axiosConfig);
 
     if( !response ) {
-        res.send('Erreur dans l\'exécution de la requête');
+        res.status(401).json({
+            status: "success",
+            message: "Erreur dans l\'exécution de la requête",
+        }).send();
+        return;
+    } else {
+        res.status(200).json({
+            status: 'success',
+            message: 'Utilisateur mis à jour',
+        }).send();
+        return;
     }
-
-    res.json({
-        status: 'success',
-        message: 'utilisateur mis à jour',
-    });
 
 });
 
@@ -149,9 +168,10 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
     
     const response = await axios.delete(`${DATABASE}/myuser/${id}`, axiosConfig);
 
-    res.json({
+    res.status(200).json({
         status: 'success',
         message: 'utilisateur supprimé',
-    });
+    }).send();
+    return;
 
 });
