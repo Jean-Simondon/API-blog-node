@@ -75,19 +75,21 @@ exports.createUser = catchAsync(async (req, res, next) => {
             status: 'error',
             message: 'Le nom d\'utilisateur est requis',
           }).send();
-
+          return;
     }
     if( !req.body.email ) {
         res.status(500).json({
             status: 'error',
             message: 'L\'utilisateur doit avoir un email',
         }).send();
+        return;
     }
     if( !req.body.password ) {
         res.status(500).json({
             status: 'error',
             message: 'L\'utilisateur doit avoir un mot de passe',
         }).send();
+        return;
     }
 
     let data = {
