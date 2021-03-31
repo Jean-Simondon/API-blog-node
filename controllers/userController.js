@@ -49,7 +49,6 @@ exports.getOneUser = catchAsync(async (req, res, next) => {
 
 });
 
-
 exports.getCurrentUser = catchAsync(async (req, res, next) => {
 
     if( req.user.data ) {
@@ -71,7 +70,6 @@ exports.getCurrentUser = catchAsync(async (req, res, next) => {
     }
 
 });
-
 
 exports.createUser = catchAsync(async (req, res, next) => {
 
@@ -108,6 +106,10 @@ exports.createUser = catchAsync(async (req, res, next) => {
     data.password = hash;
 
     const response = await axios.post(`${DATABASE}/myuser`, data, axiosConfig);
+
+    console.log(response);
+
+    response.then(console.log("success")).catch("echec");
 
     if( !response ) {
         res.status(401).json({

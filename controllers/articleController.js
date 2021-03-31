@@ -23,7 +23,6 @@ exports.getAllArticle = catchAsync(async (req, res) => {
 
 });
 
-
 exports.getOneArticle = catchAsync(async (req, res) => {
 
     const id = req.params.id;
