@@ -107,10 +107,6 @@ exports.createUser = catchAsync(async (req, res, next) => {
 
     const response = await axios.post(`${DATABASE}/myuser`, data, axiosConfig);
 
-    console.log(response);
-
-    response.then(console.log("success")).catch("echec");
-
     if( !response ) {
         res.status(401).json({
             status: 'error',
