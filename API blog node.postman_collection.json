@@ -1,0 +1,489 @@
+{
+	"info": {
+		"_postman_id": "b7b6a9dc-8176-4259-b723-e9555affa951",
+		"name": "API blog node",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Tous les utilisateurs",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJqZWFuMUBqZWFuMS5mciIsImlhdCI6MTYxMjU2MjM2Mn0.S-BVYyj6W-QuM-rYYLcspzJfZwDXFpGUgHzOBRih4O8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Un utilisateur",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJqc2ltb25kb25AeWFob28uZnIiLCJpYXQiOjE2MTI0NzQzNjR9.igy3SfpbaDrpDXwbQgqYnTclU-2XE4ZjMnLSH4mXakg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/user/606317520a633f470000194a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"606317520a633f470000194a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Créer un utilisateur",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqd3REYXRhIjp7InVzZXJFbWFpbCI6ImpzaW1vbmRvbkB5YWhvby5mciIsInVzZXJJZCI6IjVmZmQ1ODRmNzRmYTg2MGMwMDBmZTNkZCJ9LCJpYXQiOjE2MTIyOTM2Mzd9.j9aNzBhTs9d3DJQv--TSesAES_8k0dXxlxJ4fNPvA1s",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"nouveau\",\n    \"email\": \"jean2@jean2.fr\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supprimer un utilisateur",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/user/606382530a633f47000028f8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"606382530a633f47000028f8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modifier un utilisateur",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJqZWFuQGxhanVuZ2xlLmZyIiwiaWF0IjoxNjE3MTM0NTMyfQ.VxY81Y72x4zRbU9c7nTyg4G70zPAxKC0Iqp1NCpnky4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"username_test 4\",\n    \"email\": \"jean11@lajungle.fr\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/user/606317520a633f470000194a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"606317520a633f470000194a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJqZWFuQGxhanVuZ2xlLmZyIiwiaWF0IjoxNjE3MTM0NTMyfQ.VxY81Y72x4zRbU9c7nTyg4G70zPAxKC0Iqp1NCpnky4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/user/currentuser",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"currentuser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "article",
+			"item": [
+				{
+					"name": "Tous les articles",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/article",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"article"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "un article",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/article/6063179f0a633f4700001956",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"article",
+								"6063179f0a633f4700001956"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ajouter un article",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.zdzd.8LNhAo934fchd3Oh8knZLm5j6d4GHQp0DWuPV1f3TKU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"article de test depuis Postman 3\",\n    \"content\": \"Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestiae mollitia vel excepturi, laudantium nostrum autem tempore blanditiis praesentium ducimus debitis nam, suscipit incidunt minima nulla ratione obcaecati exercitationem ipsum eos.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/article",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"article"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supprimer un article",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJqZWFuQGxhanVuZ2xlLmZyIiwiaWF0IjoxNjE3MjEwMDM4fQ.8LNhAo934fchd3Oh8knZLm5j6d4GHQp0DWuPV1f3TKU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/article/6064aaf84c179f5e0000044d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"article",
+								"6064aaf84c179f5e0000044d"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modifier un article",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJqZWFuQGxhanVuZ2xlLmZyIiwiaWF0IjoxNjE3MTM0NTMyfQ.VxY81Y72x4zRbU9c7nTyg4G70zPAxKC0Iqp1NCpnky4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "content",
+									"value": "132234Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sagittis ornare condimentum. Etiam auctor lectus non lacus iaculis, vitae pulvinar enim rutrum. Ut porta, sapien ac finibus molestie, est nisi fermentum ipsum, eget bibendum nisl metus ac arcu. Fusce ut risus in erat semper maximus nec eget elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse non purus malesuada, commodo nulla nec, semper arcu. Nunc maximus dui mauris, sed porta tortor posuere et. Maecenas varius lacinia porttitor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec at enim efficitur, efficitur sem in, convallis turpis. Nulla eu massa at arcu faucibus posuere. Integer et eleifend odio, id dapibus sem.  Aliquam ullamcorper, velit nec congue rhoncus, ante nibh lacinia erat, sed facilisis massa magna volutpat dolor. Etiam et rhoncus tortor, vitae fermentum justo. Maecenas eu consectetur enim. Vivamus eget ante aliquet, blandit magna a, ornare est. Nunc luctus egestas risus, nec elementum arcu rhoncus eget. Aliquam eu eros eleifend, bibendum nunc sed, faucibus lorem. Donec diam tellus, dignissim eget odio et, lacinia malesuada nulla. Aliquam semper iaculis dui, non tempor velit facilisis bibendum. Nam eu magna suscipit, pretium sem at, sodales neque. Praesent sollicitudin neque vitae orci maximus feugiat. Curabitur suscipit mattis dolor at pulvinar. Aenean eget ipsum scelerisque, placerat diam sit amet, mattis odio. Curabitur vel tempor purus. Donec porttitor at eros eget faucibus. Donec rhoncus sem enim, id blandit lorem malesuada vel. Sed vel posuere est.  Vivamus vitae auctor orci. Curabitur lobortis neque non arcu egestas molestie. Nulla tincidunt risus nulla, at viverra diam aliquet et. Proin a dui porttitor, ornare enim ut, tincidunt ligula. Vivamus a erat ac risus tincidunt dignissim eget eu mauris. Aliquam ultrices erat et sapien euismod, quis molestie odio maximus. Vivamus feugiat augue lectus, nec mattis velit porta consequat. Etiam dignissim aliquet eros, at cursus nulla tempus quis. In dignissim tempor sodales.  Duis a tincidunt ante. Pellentesque maximus lectus sapien, ac fermentum est congue quis. Phasellus vel pretium eros, in dapibus turpis. Praesent ut posuere eros. Morbi a tortor sed enim rhoncus laoreet. Aliquam sollicitudin quam non dui tempor placerat. In hac habitasse platea dictumst. Morbi malesuada lectus id sem finibus, id dictum dui dictum.  Nulla suscipit orci id nibh tempor iaculis. Nam eu arcu risus. Nam hendrerit, mauris posuere iaculis vestibulum, turpis elit mollis sem, vitae congue neque eros id orci. Duis vulputate semper augue quis consectetur. Nunc urna lorem, commodo eu ultrices vel, tristique quis ipsum. Quisque ultrices vestibulum lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi quis efficitur nisi, ut auctor sapien. Ut vel neque ut diam posuere tristique.",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "test update",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/article/6063179f0a633f4700001956",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"article",
+								"6063179f0a633f4700001956"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"jean@lajungle.fr\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
